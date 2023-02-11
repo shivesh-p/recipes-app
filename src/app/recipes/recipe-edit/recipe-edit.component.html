@@ -1,1 +1,4 @@
-<p>recipe-edit works!</p>
+<h1 *ngIf="allowEdit; else noEdit">Edit Mode</h1>
+<ng-template #noEdit>
+  <h1>Create</h1>
+</ng-template>
