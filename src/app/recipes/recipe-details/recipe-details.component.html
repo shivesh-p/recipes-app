@@ -1,42 +1,63 @@
-<div class="row">
-  <div class="col-md-12">
-    <img src="" alt="Recipe" srcset="" />
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <img [src]="recipe.imagePath" alt="Recipe" srcset="" />
+    </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-md-12">
-    <h1>Recipe Name</h1>
+  <div class="row">
+    <div class="col-md-12">
+      <h1>{{ recipe.name }}</h1>
+    </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-md-12">
-    <div class="d-flex flex-end">
-      <div class="dropdown">
-        <button
-          class="btn btn-primary dropdown-toggle"
-          type="button"
-          id="dropdownMenuButton1"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
-          Manage Recipes
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li><a class="dropdown-item" href="#">To Shopping List</a></li>
-          <li><a class="dropdown-item" href="#">Edit Recipe</a></li>
-          <li><a class="dropdown-item" href="#">Delete Recipe</a></li>
-        </ul>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="d-flex flex-end">
+        <div class="dropdown" appCustomDd>
+          <button
+            class="btn btn-primary dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton1"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Manage Recipes
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li>
+              <a class="dropdown-item" (click)="addIngredients()"
+                >To Shopping List</a
+              >
+            </li>
+            <li><a class="dropdown-item">Edit Recipe</a></li>
+            <li><a class="dropdown-item">Delete Recipe</a></li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-md-12">
-    <h4>Description</h4>
+  <div class="row">
+    <div class="col-md-12">
+      <h4>{{ recipe.desc }}</h4>
+    </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-md-12">
-    <h4>Ingredients</h4>
+  <div class="row">
+    <div class="col-md-12">
+      <h4>Ingredients</h4>
+      <ul class="list-group">
+        <li
+          class="list-group-item d-flex justify-content-between align-items-center bg-warning"
+        >
+          <b>Ingredient List</b>
+          <span class="badge bg-secondary badge-pill">Amount</span>
+        </li>
+        <li
+          *ngFor="let ing of recipe.ingredients"
+          class="list-group-item d-flex justify-content-between align-items-center"
+        >
+          {{ ing.name }}
+          <span class="badge bg-secondary badge-pill">{{ ing.amount }}</span>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
