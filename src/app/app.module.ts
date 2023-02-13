@@ -13,6 +13,7 @@ import { ShoppingListEditComponent } from './shopping-list/shopping-list-edit/sh
 import { CustomDdDirective } from './shared/directives/custom-dd.directive';
 import { NorecipeComponent } from './norecipe/norecipe.component';
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -28,8 +29,8 @@ import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component
     NorecipeComponent,
     RecipeEditComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule],
+  imports: [BrowserModule, FormsModule, ReactiveFormsModule, AppRoutingModule],
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

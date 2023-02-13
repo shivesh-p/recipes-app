@@ -1,6 +1,6 @@
 <div class="row">
   <div class="container">
-    <form>
+    <form ngForm #f="ngForm" (ngSubmit)="onSubmitForm(f)">
       <div class="mb-3 row">
         <div class="col-4 form-group">
           <label for="name">Name</label>
@@ -9,9 +9,14 @@
             class="form-control"
             name="name"
             id="name"
+            required
+            ngModel
             placeholder="Name"
-            #ingName
+            #ingName="ngModel"
           />
+          <span class="text-danger" *ngIf="!ingName.valid && ingName.touched"
+            >Name is required</span
+          >
         </div>
         <div class="col-2 form-group">
           <label for="amount">Amount</label>
@@ -21,22 +26,52 @@
             id="amount"
             min="0"
             class="form-control"
-            #ingAmount
+            ngModel
+            number
+            required
+            #ingAmount="ngModel"
           />
+          <span
+            class="text-danger"
+            *ngIf="!ingAmount.valid && ingAmount.touched"
+            >Amount is required</span
+          >
         </div>
       </div>
 
       <div class="mb-3 row">
         <div class="col-md-12">
           <button
-            type="button"
+            type="submit"
+            *ngIf="!editMode"
             class="btn btn-success"
-            (click)="onIngredientAdd()"
+            [disabled]="!f.valid"
           >
             Submit
           </button>
-          <button type="button" class="ms-1 btn btn-danger">Delete</button>
-          <button type="button" class="ms-1 btn btn-primary">Clear</button>
+          <button
+            type="submit"
+            *ngIf="editMode"
+            class="btn btn-warning"
+            [disabled]="!f.valid"
+          >
+            Edit
+          </button>
+          <button
+            type="button"
+            *ngIf="editMode"
+            class="ms-1 btn btn-danger"
+            (click)="deleteIngredient()"
+          >
+            Delete
+          </button>
+          <button
+            type="button"
+            class="ms-1 btn btn-primary"
+            (click)="resetForm(f)"
+          >
+            Clear
+          </button>
         </div>
       </div>
     </form>
