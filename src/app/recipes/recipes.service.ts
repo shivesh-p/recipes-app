@@ -2,12 +2,14 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { Recipe } from './recipe.model';
 import { Ingredient } from '../shared/ingredient.model';
 import { ShoppingListService } from '../shopping-list/shopping-list.service';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RecipesService {
   id: number = 2;
+  recipesChanged: Subject<Recipe[]> = new Subject<Recipe[]>;
   private recipes: Recipe[] = [
     new Recipe(1,
       'R1',
@@ -32,7 +34,7 @@ export class RecipesService {
   geRecipes() {
     return this.recipes.slice();
   }
-  getRecipeById({ id }: { id: number; }): Recipe {
+  getRecipeById(id: number): Recipe {
     return this.recipes.filter((obj) => obj.id
       == id)[0];
   }
@@ -43,5 +45,25 @@ export class RecipesService {
   }
   onAddToShoppingList(ingredients: Ingredient[]) {
     this.shoppingService.addBulkIngredients(ingredients);
+  }
+  addRecipe(recipe: Recipe) {
+    this.id = this.id + 1;
+    recipe.id = this.id;
+    this.recipes.push(recipe);
+    this.recipesChanged.next(this.recipes.slice());
+
+  }
+  updateRecipe(ind: number, recipe: Recipe) {
+    let editRecipe = this.recipes.filter((v) => v.id == this.id)[0];
+    editRecipe.name = recipe.name;
+    editRecipe.desc = recipe.desc;
+    editRecipe.imagePath = recipe.imagePath;
+    editRecipe.ingredients = recipe.ingredients;
+    this.recipesChanged.next(this.recipes.slice());
+
+  }
+  deleteRecipeById(id: number) {
+    this.recipes = this.recipes.filter((v) => v.id !== this.id);
+    this.recipesChanged.next(this.recipes.slice());
   }
 }

@@ -1,4 +1,136 @@
-<h1 *ngIf="allowEdit; else noEdit">Edit Mode</h1>
-<ng-template #noEdit>
-  <h1>Create</h1>
-</ng-template>
+<form class="row g-3 mt-4" [formGroup]="recipeForm" (ngSubmit)="submitForm()">
+  <div class="col-md-12">
+    <label for="validationCustom01" class="form-label"><b>Name</b></label>
+    <input
+      type="text"
+      class="form-control"
+      id="validationCustom01"
+      formControlName="name"
+    />
+    <div>
+      <span
+        class="text-danger"
+        *ngIf="!recipeForm.get('name').valid && recipeForm.get('name').touched"
+        >Name is invalid</span
+      >
+    </div>
+  </div>
+  <div class="col-md-12">
+    <label for="validationCustom02" class="form-label"
+      ><b>Description</b></label
+    >
+    <textarea
+      cols="30"
+      rows="3"
+      type="text"
+      class="form-control"
+      id="validationCustom02"
+      formControlName="desc"
+    ></textarea>
+    <div>
+      <span
+        class="text-danger"
+        *ngIf="!recipeForm.get('desc').valid && recipeForm.get('desc').touched"
+        >Description is invalid.</span
+      >
+    </div>
+  </div>
+
+  <div class="col-md-12">
+    <label for="validationCustom03" class="form-label"
+      ><b>Image Path</b>
+    </label>
+    <input
+      type="text"
+      class="form-control"
+      id="validationCustom03"
+      formControlName="imagePath"
+      #imagePath
+    />
+    <div>
+      <span
+        class="text-danger"
+        *ngIf="
+          !recipeForm.get('imagePath').valid &&
+          recipeForm.get('imagePath').touched
+        "
+        >Please enter an image path.</span
+      >
+    </div>
+  </div>
+  <div class="col-md-12">
+    <img
+      [src]="imagePath.value"
+      class="img-responsive"
+      style="border-radius: 5px"
+    />
+  </div>
+  <div class="col-md-12" formArrayName="ingredients">
+    <div class="row">
+      <div class="col-md-6"><b>Ingredient List</b></div>
+      <div class="col-md-6 d-flex justify-content-end">
+        <button
+          class="btn btn-success"
+          type="button"
+          (click)="addIngredientControl()"
+        >
+          Add Ingredient
+        </button>
+      </div>
+    </div>
+    <div class="d-flex justify-content-between align-content-center">
+      <label for="">Name</label>
+      <label for="">Amount</label>
+    </div>
+    <div
+      class="col-12"
+      *ngFor="let ing of controls; let i = index"
+      [formGroupName]="i"
+    >
+      <div
+        class="d-flex justify-content-between align-content-center gap-4 mt-2"
+      >
+        <input type="text" formControlName="name" class="form-control" />
+        <input
+          type="number"
+          name=""
+          id=""
+          class="form-control"
+          formControlName="amount"
+        />
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="removeIngredientControl(i)"
+        >
+          X
+        </button>
+      </div>
+    </div>
+  </div>
+  <button
+    class="btn btn-primary"
+    *ngIf="!allowEdit"
+    type="submit"
+    [disabled]="!recipeForm.valid"
+  >
+    Submit
+  </button>
+  <button
+    class="btn btn-warning"
+    *ngIf="allowEdit"
+    type="submit"
+    [disabled]="!recipeForm.valid"
+  >
+    Update
+  </button>
+  <button
+    type="submit"
+    *ngIf="allowEdit"
+    class="btn btn-danger"
+    (click)="deleteRecipeById()"
+  >
+    Delete Recipe
+  </button>
+  <button class="btn btn-info" (click)="navigateAway()">Cancel</button>
+</form>
