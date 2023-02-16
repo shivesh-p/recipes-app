@@ -36,8 +36,8 @@
           <li class="nav-item dropdown" appCustomDd>
             <a class="nav-link dropdown-toggle" id="dropdownId">Manage</a>
             <div class="dropdown-menu" aria-labelledby="dropdownId">
-              <a class="dropdown-item">Fetch Data</a>
-              <a class="dropdown-item">Save Data</a>
+              <a class="dropdown-item" (click)="getAllRecipes()">Fetch Data</a>
+              <a class="dropdown-item" (click)="saveAllRecipes()">Save Data</a>
             </div>
           </li>
         </ul>
