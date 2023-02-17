@@ -1,10 +1,12 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AuthComponent } from './auth/auth.component';
+import { AuthInterceptor } from './auth/auth.interceptor';
 import { HeaderComponent } from './header/header.component';
 import { NorecipeComponent } from './norecipe/norecipe.component';
 import { RecipeDetailsComponent } from './recipes/recipe-details/recipe-details.component';
@@ -13,6 +15,7 @@ import { RecipeItemComponent } from './recipes/recipe-list/recipe-item/recipe-it
 import { RecipeListComponent } from './recipes/recipe-list/recipe-list.component';
 import { RecipesComponent } from './recipes/recipes.component';
 import { CustomDdDirective } from './shared/directives/custom-dd.directive';
+import { LoadingComponent } from './shared/loading/loading.component';
 import { ShoppingListEditComponent } from './shopping-list/shopping-list-edit/shopping-list-edit.component';
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 
@@ -29,9 +32,18 @@ import { ShoppingListComponent } from './shopping-list/shopping-list.component';
     CustomDdDirective,
     NorecipeComponent,
     RecipeEditComponent,
+    AuthComponent,
+    LoadingComponent
   ],
-  imports: [BrowserModule, FormsModule, ReactiveFormsModule, HttpClientModule, AppRoutingModule],
-  providers: [],
+  imports: [BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    AppRoutingModule],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true
+    }],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

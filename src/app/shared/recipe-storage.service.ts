@@ -3,15 +3,14 @@ import { Injectable } from '@angular/core';
 import { Observable, map, tap } from 'rxjs';
 import { Recipe } from '../recipes/recipe.model';
 import { RecipesService } from '../recipes/recipes.service';
-
-
+import { AUTHService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RecipeStorageService {
   baseUrl: string = 'https://recipebook-7fa89-default-rtdb.firebaseio.com/recipes.json'
-  constructor(private http: HttpClient, private recipeService: RecipesService) { }
+  constructor(private http: HttpClient, private recipeService: RecipesService, private authService: AUTHService) { }
 
   getRecipes(): Observable<Recipe[]> {
     return this.http.get<Recipe[]>(this.baseUrl)

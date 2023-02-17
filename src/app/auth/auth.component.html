@@ -1,0 +1,67 @@
+<div class="row">
+  <div *ngIf="isLoading" style="text-align: center">
+    <app-loading></app-loading>
+  </div>
+  <div
+    *ngIf="!isLoading"
+    class="col-xs-12 col-md-12 col-md-offset-3 col-lg-12 col-lg-offset-12"
+  >
+    <form ngForm #f="ngForm" (ngSubmit)="submitForm(f)">
+      <div class="mb-3">
+        <label for="" class="form-label">Email</label>
+        <input
+          type="email"
+          class="form-control"
+          name="email"
+          required
+          ngModel
+          email
+          #em="ngModel"
+          aria-describedby="emailHelpId"
+          placeholder="abc@mail.com"
+        />
+        <small *ngIf="!em.valid && em.touched" class="form-text text-danger"
+          >Please enter an valid email address.</small
+        >
+      </div>
+      <div class="mb-3">
+        <label for="" class="form-label">Password</label>
+        <input
+          type="password"
+          class="form-control"
+          name="password"
+          id="pwd"
+          required
+          placeholder="********"
+          ngModel
+          minlength="8"
+          #pwd="ngModel"
+        />
+        <small *ngIf="!pwd.valid && pwd.touched" class="form-text text-danger"
+          >Please enter a minimum of 8 characters.</small
+        >
+      </div>
+      <button
+        type="submit"
+        [disabled]="!f.valid"
+        class="btn"
+        [ngClass]="isLogin ? 'btn-success' : 'btn-warning'"
+      >
+        {{ isLogin ? "Login" : "Sign Up" }}
+      </button>
+      <button type="button" class="ms-2 btn btn-primary" (click)="onSwitch()">
+        Switch to {{ isLogin ? "Sign Up" : "Login" }}
+      </button>
+    </form>
+  </div>
+  <hr class="mt-2" />
+  <div *ngIf="isError">
+    <div
+      class="alert alert-danger d-flex justify-content-between align-content-center"
+      role="alert"
+    >
+      <span> <strong>Error Occured!</strong> {{ errorMessage }}</span>
+      <button class="btn btn-danger" (click)="dismissError()">Dismiss</button>
+    </div>
+  </div>
+</div>

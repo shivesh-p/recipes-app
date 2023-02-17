@@ -53,7 +53,7 @@ export class RecipesService {
 
   }
   updateRecipe(ind: number, recipe: Recipe) {
-    let editRecipe = this.recipes.filter((v) => v.id == this.id)[0];
+    let editRecipe = this.recipes.filter((v) => v.id == ind)[0];
     editRecipe.name = recipe.name;
     editRecipe.desc = recipe.desc;
     editRecipe.imagePath = recipe.imagePath;
