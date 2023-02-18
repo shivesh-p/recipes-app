@@ -55,7 +55,7 @@
     </form>
   </div>
   <hr class="mt-2" />
-  <div *ngIf="isError">
+  <!-- <div *ngIf="isError">
     <div
       class="alert alert-danger d-flex justify-content-between align-content-center"
       role="alert"
@@ -63,5 +63,12 @@
       <span> <strong>Error Occured!</strong> {{ errorMessage }}</span>
       <button class="btn btn-danger" (click)="dismissError()">Dismiss</button>
     </div>
-  </div>
+  </div> -->
+  <!-- custom dynamic component for alert added using ngif logic-->
+  <!-- <div *ngIf="isError">
+    <app-alert [message]="errorMessage" (closed)="dismissError()"></app-alert>
+  </div> -->
+
+  <!-- using dynamic component handling logic -->
+  <ng-container #container></ng-container>
 </div>

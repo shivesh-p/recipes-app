@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ComponentFactoryResolver, ViewChild, ViewContainerRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { AlertComponent } from '../shared/alert/alert.component';
 import { AUTHService } from '../shared/auth.service';
 
 @Component({
@@ -9,11 +11,15 @@ import { AUTHService } from '../shared/auth.service';
   styleUrls: ['./auth.component.css']
 })
 export class AuthComponent {
-  constructor(private authService: AUTHService, private router: Router) { }
+  constructor(private authService: AUTHService,
+    private router: Router,
+    private componentFactoryResolver: ComponentFactoryResolver) { }
   isLogin: boolean = true;
   isLoading: boolean = false;
   isError: boolean = false;
   errorMessage: string;
+  alertSubscription: Subscription;
+  @ViewChild('container', { read: ViewContainerRef }) container: ViewContainerRef
   onSwitch() {
     this.isLogin = !this.isLogin;
   }
@@ -34,6 +40,7 @@ export class AuthComponent {
           this.isLoading = false;
           this.isError = true;
           this.errorMessage = err.message;
+          this.showAlert(this.errorMessage)
         }
       })
 
@@ -49,6 +56,7 @@ export class AuthComponent {
           this.isError = true;
           console.log(err.message);
           this.errorMessage = err.message;
+          this.showAlert(this.errorMessage);
         }
       })
       form.reset();
@@ -57,5 +65,15 @@ export class AuthComponent {
   dismissError() {
     this.isError = false;
     this.errorMessage = '';
+  }
+
+  private showAlert(message: string) {
+    this.container.clear();
+    const alertRef = this.container.createComponent(AlertComponent)
+    alertRef.setInput('message', message);
+    this.alertSubscription = alertRef.instance.closed.subscribe((v) => {
+      this.alertSubscription.unsubscribe();
+      alertRef.destroy();
+    });
   }
 }

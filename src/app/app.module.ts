@@ -18,6 +18,7 @@ import { CustomDdDirective } from './shared/directives/custom-dd.directive';
 import { LoadingComponent } from './shared/loading/loading.component';
 import { ShoppingListEditComponent } from './shopping-list/shopping-list-edit/shopping-list-edit.component';
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
+import { AlertComponent } from './shared/alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { ShoppingListComponent } from './shopping-list/shopping-list.component';
     NorecipeComponent,
     RecipeEditComponent,
     AuthComponent,
-    LoadingComponent
+    LoadingComponent,
+    AlertComponent
   ],
   imports: [BrowserModule,
     FormsModule,
