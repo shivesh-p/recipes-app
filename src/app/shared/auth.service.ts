@@ -6,7 +6,7 @@ import { User } from '../auth/user.mode';
 export class PostData {
   public email: string;
   public password: string;
-  public returnSecureToken?: boolean = true;
+  public returnSecureToken: boolean = true;
 }
 export interface ResponseData {
   localId: string
@@ -54,6 +54,7 @@ export class AUTHService {
   }
 
   signIn(data: PostData) {
+    data.returnSecureToken = true;
     return this.http.post<loginData>(this.baseSigninUrl, data).pipe(
       catchError(this.handleError),
       tap(respData => {
