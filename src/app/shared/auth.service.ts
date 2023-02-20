@@ -31,6 +31,7 @@ export interface loginData {
   providedIn: 'root',
 })
 export class AUTHService {
+  private expirationTokenTimer: any;
   userSubject: BehaviorSubject<User> = new BehaviorSubject<User>(null);
   baseApiKey = '  AIzaSyDWMURhm4lKmZKWAkF4KotsJEKqTvcoTQk';
   baseSignupUrl =
@@ -104,7 +105,9 @@ export class AUTHService {
     debugger;
     const expirationDate = new Date(new Date().getTime() + +expiresIn * 1000)
     const userData = new User(email, localId, idToken, expirationDate);
+
     this.userSubject.next(userData);
+    this.autoLogout(+expiresIn * 1000);
     localStorage.setItem("user", JSON.stringify(userData));
   }
 
@@ -118,10 +121,22 @@ export class AUTHService {
     if (!user) {
       return;
     }
-    else {
-      const loggedInUser = new User(user.email, user.id, user._token, new Date(user._tokenExpirationDate))
-      //if (loggedInUser.token)
+
+    const loggedInUser = new User(user.email, user.id, user._token, new Date(user._tokenExpirationDate))
+    if (loggedInUser.token) {
       this.userSubject.next(loggedInUser);
+      const expirationDuration = new Date(loggedInUser._tokenExpirationDate).getTime() - new Date().getTime();
+      this.autoLogout(expirationDuration)
     }
+
+  }
+  logout() {
+    this.userSubject.next(null);
+    localStorage.removeItem("user");
+  }
+  autoLogout(expirationDuration: number) {
+    this.expirationTokenTimer = setTimeout(() => {
+      this.logout();
+    }, expirationDuration);
   }
 }
