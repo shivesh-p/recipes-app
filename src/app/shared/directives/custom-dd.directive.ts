@@ -1,8 +1,10 @@
-import { Directive, ElementRef, HostBinding, HostListener, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
 
-@Directive({
-  selector: '[appCustomDd]'
-})
+@Directive(
+  {
+    selector: "[appCustomDd]",
+    exportAs: "appDropDown"
+  })
 export class CustomDdDirective {
   //@HostBinding('class.show')  isShowDD: boolean = false;
   isShowDD: boolean = false;
