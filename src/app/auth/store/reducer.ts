@@ -27,7 +27,11 @@ export function authReducer(
         user: null,
       };
     }
-
+    case AuthStoreActions.LOGIN_START: {
+      return {
+        ...state,
+      };
+    }
     default: {
       return state;
     }
