@@ -2,8 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Ingredient } from '../../shared/ingredient.model';
+import * as appState from '../../store/app.reducer';
 import { ShoppingListService } from '../shopping-list.service';
-import * as shoppingListState from '../store/shopping-list-reducer';
 import * as ShoppingListAction from '../store/shopping-list.action';
 @Component({
   selector: 'app-shopping-list-edit',
@@ -17,7 +17,7 @@ export class ShoppingListEditComponent implements OnInit {
   // @ViewChild('ingName') ingName!: ElementRef;
   // @ViewChild('ingAmount') ingAmount!: ElementRef;
   constructor(private shoppingService: ShoppingListService,
-    private store: Store<shoppingListState.AppState>) {
+    private store: Store<appState.AppState>) {
   }
 
   ngOnInit(): void {
