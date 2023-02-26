@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { environment } from './../environments/environment.development';
 
 import { EffectsModule } from '@ngrx/effects';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AppRoutingModule } from './app-routing.module';
@@ -26,6 +27,7 @@ import { appReducer } from './store/app.reducer';
     StoreModule.forRoot(appReducer),
     EffectsModule.forRoot([AuthEffects]),
     StoreDevtoolsModule.instrument({ logOnly: environment.production }),
+    StoreRouterConnectingModule.forRoot(),
   ],
 
   bootstrap: [AppComponent],

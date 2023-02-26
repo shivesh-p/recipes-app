@@ -114,16 +114,16 @@ export class AuthEffects {
     },
     { dispatch: false }
   );
-  // authRedirect = createEffect(
-  //   () =>
-  //     this.actions$.pipe(
-  //       ofType(AuthActions.LOGIN),
-  //       tap(() => {
-  //         this.router.navigate(['/']);
-  //       })
-  //     ),
-  //   { dispatch: false }
-  // );
+  authRedirect = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthActions.LOGIN),
+        tap(() => {
+          this.router.navigate(['/']);
+        })
+      ),
+    { dispatch: false }
+  );
 
   authSignup$ = createEffect(() =>
     this.actions$.pipe(
