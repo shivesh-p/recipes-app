@@ -34,8 +34,8 @@ export class RecipesService {
     return this.recipes.slice();
   }
   setRecipes(recipes: Recipe[]) {
-    this.recipes = recipes;
-    this.recipesChanged.next(this.recipes.slice());
+    // this.recipes = recipes;
+    // this.recipesChanged.next(this.recipes.slice());
   }
   getRecipeById(id: number): Recipe {
     return this.recipes.filter((obj) => obj.id

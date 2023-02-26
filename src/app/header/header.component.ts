@@ -5,7 +5,6 @@ import { Subscription } from 'rxjs';
 import * as AuthActions from '../auth/store/actions';
 import { RecipeStorageService } from '../shared/recipe-storage.service';
 import * as appState from '../store/app.reducer';
-import { RecipesService } from './../recipes/recipes.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -16,7 +15,6 @@ export class HeaderComponent {
   isAuthenticated: boolean = false;
   constructor(
     private recipeStorage: RecipeStorageService,
-    private recipeService: RecipesService,
     private router: Router,
     private store: Store<appState.AppState>
   ) {}
@@ -28,7 +26,7 @@ export class HeaderComponent {
   }
   getAllRecipes() {
     this.recipeStorage.getRecipes().subscribe((t) => {
-      this.recipeService.setRecipes(t);
+      //this.recipeService.setRecipes(t);
     });
   }
   saveAllRecipes() {
