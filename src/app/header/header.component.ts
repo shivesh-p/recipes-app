@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import * as AuthActions from '../auth/store/actions';
-import { AUTHService } from '../shared/auth.service';
 import { RecipeStorageService } from '../shared/recipe-storage.service';
 import * as appState from '../store/app.reducer';
 import { RecipesService } from './../recipes/recipes.service';
@@ -18,7 +17,6 @@ export class HeaderComponent {
   constructor(
     private recipeStorage: RecipeStorageService,
     private recipeService: RecipesService,
-    private authService: AUTHService,
     private router: Router,
     private store: Store<appState.AppState>
   ) {}

@@ -8,16 +8,12 @@ import {
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { AUTHService } from '../shared/auth.service';
 import * as appState from '../store/app.reducer';
 import { User } from './user.mode';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   user: User = null;
-  constructor(
-    private authService: AUTHService,
-    private store: Store<appState.AppState>
-  ) {}
+  constructor(private store: Store<appState.AppState>) {}
 
   intercept(
     request: HttpRequest<unknown>,

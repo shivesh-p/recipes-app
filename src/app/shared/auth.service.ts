@@ -1,9 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { catchError, tap, throwError } from 'rxjs';
 import * as AuthActions from '../auth/store/actions';
-import { User } from '../auth/user.mode';
 import * as appState from '../store/app.reducer';
 export class PostData {
   public email: string;
@@ -34,152 +31,18 @@ export interface loginData {
 })
 export class AUTHService {
   private expirationTokenTimer: any;
-  //userSubject: BehaviorSubject<User> = new BehaviorSubject<User>(null);
-  baseApiKey = '  AIzaSyDWMURhm4lKmZKWAkF4KotsJEKqTvcoTQk';
-  baseSignupUrl =
-    'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' +
-    this.baseApiKey;
-  baseSigninUrl =
-    'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' +
-    this.baseApiKey;
+  constructor(private store: Store<appState.AppState>) {}
 
-  constructor(
-    private http: HttpClient,
-    private store: Store<appState.AppState>
-  ) {}
-
-  signUp(data: PostData) {
-    return this.http.post<ResponseData>(this.baseSignupUrl, data).pipe(
-      catchError(this.handleError),
-      tap((respData) => {
-        this.handleAuthentication(
-          respData.email,
-          respData.localId,
-          respData.expiresIn,
-          respData.idToken
-        );
-      })
-    );
-  }
-
-  signIn(data: PostData) {
-    data.returnSecureToken = true;
-    return this.http.post<loginData>(this.baseSigninUrl, data).pipe(
-      catchError(this.handleError),
-      tap((respData) => {
-        debugger;
-        console.log(respData);
-        this.handleAuthentication(
-          respData.email,
-          respData.localId,
-          respData.expiresIn,
-          respData.idToken
-        );
-      })
-    );
-  }
-  handleError(errorResponse) {
-    debugger;
-    let errorMessage = 'An unknown error occured!';
-    if (!errorResponse.error || !errorResponse.error.error) {
-      return throwError(() => {
-        const error: any = new Error(errorMessage);
-        error.timestamp = Date.now();
-        return error;
-      });
-    }
-    switch (errorResponse.error.error.message) {
-      case 'EMAIL_EXISTS':
-        errorMessage = 'This email already exists!';
-        break;
-      case 'TOO_MANY_ATTEMPTS_TRY_LATER':
-        errorMessage =
-          'We have blocked all requests from this device due to unusual activity. Try again later.';
-        break;
-      case 'INVALID_PASSWORD':
-        errorMessage = 'Uh huh! Please check your password.';
-        break;
-      case 'EMAIL_NOT_FOUND':
-        errorMessage =
-          'There is no user record corresponding to this identifier. The user may have been deleted.';
-        break;
-      case 'USER_DISABLED':
-        errorMessage =
-          'The user account has been disabled by an administrator.';
-        break;
-      default:
-        errorMessage = errorResponse.error.error.message;
-    }
-    return throwError(() => {
-      const error: any = new Error(errorMessage);
-      error.timestamp = Date.now();
-      return error;
-    });
-  }
-  handleAuthentication(
-    email: string,
-    localId: string,
-    expiresIn: string,
-    idToken: string
-  ) {
-    debugger;
-    const expirationDate = new Date(new Date().getTime() + +expiresIn * 1000);
-    const userData = new User(email, localId, idToken, expirationDate);
-
-    //this.userSubject.next(userData);
-    this.store.dispatch(
-      new AuthActions.Login({
-        email: userData.email,
-        userId: userData.id,
-        token: userData.token,
-        expirationDate: expirationDate,
-      })
-    );
-    this.autoLogout(+expiresIn * 1000);
-    localStorage.setItem('user', JSON.stringify(userData));
-  }
-
-  autoLogin() {
-    const user: {
-      email: string;
-      id: string;
-      _token: string;
-      _tokenExpirationDate: string;
-    } = JSON.parse(localStorage.getItem('user'));
-    if (!user) {
-      return;
-    }
-
-    const loggedInUser = new User(
-      user.email,
-      user.id,
-      user._token,
-      new Date(user._tokenExpirationDate)
-    );
-    if (loggedInUser.token) {
-      //this.userSubject.next(loggedInUser);
-      this.store.dispatch(
-        new AuthActions.Login({
-          email: loggedInUser.email,
-          userId: loggedInUser.id,
-          token: loggedInUser.token,
-          expirationDate: new Date(user._tokenExpirationDate),
-        })
-      );
-      const expirationDuration =
-        new Date(loggedInUser._tokenExpirationDate).getTime() -
-        new Date().getTime();
-      this.autoLogout(expirationDuration);
-    }
-  }
-  logout() {
-    //this.userSubject.next(null);
-    this.store.dispatch(new AuthActions.Logout());
-    localStorage.removeItem('user');
-  }
-  autoLogout(expirationDuration: number) {
+  setLogoutTimer(expirationDuration: number) {
     this.expirationTokenTimer = setTimeout(() => {
-      this.logout();
+      this.store.dispatch(new AuthActions.Logout());
     }, expirationDuration);
+  }
+
+  clearLogoutTimer() {
+    if (this.expirationTokenTimer) {
+      clearTimeout(this.expirationTokenTimer);
+      this.expirationTokenTimer = null;
+    }
   }
 }

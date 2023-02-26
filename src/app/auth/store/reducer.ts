@@ -18,6 +18,7 @@ export function authReducer(
         // return new class state
         ...state,
         user,
+        loading: false,
       };
     }
     case AuthStoreActions.LOGOUT: {
@@ -25,12 +26,34 @@ export function authReducer(
         // return new class state
         ...state,
         user: null,
+        loading: false,
       };
     }
     case AuthStoreActions.LOGIN_START: {
       return {
         ...state,
+        authError: null,
+        loading: true,
       };
+    }
+    case AuthStoreActions.SIGNUP_START: {
+      return {
+        ...state,
+        user: null,
+        authError: null,
+        loading: true,
+      };
+    }
+    case AuthStoreActions.LOGIN_ERROR: {
+      return {
+        ...state,
+        user: null,
+        loading: false,
+        authError: action.payload.error,
+      };
+    }
+    case AuthStoreActions.AUTO_LOGIN: {
+      return { ...state };
     }
     default: {
       return state;
