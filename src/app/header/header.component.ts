@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import * as AuthActions from '../auth/store/actions';
-import { RecipeStorageService } from '../shared/recipe-storage.service';
+import * as recipeActions from '../recipes/store/actions';
 import * as appState from '../store/app.reducer';
 @Component({
   selector: 'app-header',
@@ -14,7 +14,6 @@ export class HeaderComponent {
   userSubscription: Subscription;
   isAuthenticated: boolean = false;
   constructor(
-    private recipeStorage: RecipeStorageService,
     private router: Router,
     private store: Store<appState.AppState>
   ) {}
@@ -25,12 +24,14 @@ export class HeaderComponent {
     });
   }
   getAllRecipes() {
-    this.recipeStorage.getRecipes().subscribe((t) => {
-      //this.recipeService.setRecipes(t);
-    });
+    // this.recipeStorage.getRecipes().subscribe((t) => {
+    //   //this.recipeService.setRecipes(t);
+    // });
+    this.store.dispatch(new recipeActions.FetchRecipes());
   }
   saveAllRecipes() {
-    this.recipeStorage.addAllRecipe().subscribe((v) => {});
+    //this.recipeStorage.addAllRecipe().subscribe((v) => {});
+    this.store.dispatch(new recipeActions.SaveRecipes());
   }
   onLogout() {
     //this.authService.userSubject.next(null);

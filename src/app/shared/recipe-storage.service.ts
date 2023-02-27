@@ -36,7 +36,7 @@ export class RecipeStorageService {
   }
 
   addAllRecipe() {
-    let recipes = this.recipeService.geRecipes();
+    let recipes = this.recipeService.geRecipes(); 
     return this.http.put(this.baseUrl, recipes);
   }
 }

@@ -21,6 +21,7 @@ export class RecipeListComponent implements OnInit {
     //   this.recipes = recipes;
     // });
     // this.recipes = this.recipeService.geRecipes();
+
     this.store.select('recipes').subscribe((recipesState) => {
       this.recipes = recipesState.recipes;
     });

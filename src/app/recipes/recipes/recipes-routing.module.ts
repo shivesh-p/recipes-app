@@ -9,20 +9,30 @@ import { RecipesComponent } from '../recipes.component';
 
 const routes: Routes = [
   {
-    path: '', component: RecipesComponent,
+    path: '',
+    component: RecipesComponent,
+    resolve: [RecipesResolverResolver],
     canActivate: [AuthGuard],
     canActivateChild: [AuthGuard],
     children: [
       { path: '', component: NorecipeComponent },
       { path: 'create', component: RecipeEditComponent },
-      { path: ':id', component: RecipeDetailsComponent, resolve: [RecipesResolverResolver] },
-      { path: ':id/edit', component: RecipeEditComponent, resolve: [RecipesResolverResolver] },
-    ]
+      {
+        path: ':id',
+        component: RecipeDetailsComponent,
+        resolve: [RecipesResolverResolver],
+      },
+      {
+        path: ':id/edit',
+        component: RecipeEditComponent,
+        resolve: [RecipesResolverResolver],
+      },
+    ],
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class RecipesRoutingModule { }
+export class RecipesRoutingModule {}
